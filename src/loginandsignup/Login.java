@@ -264,8 +264,14 @@ public class Login extends javax.swing.JFrame {
             if (userEmail.isEmpty()) {
                 JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
                 email.requestFocusInWindow();
+            } else if (!userEmail.contains("@")) {
+                JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
+                email.requestFocusInWindow();
             } else if (userPassword.isEmpty()) {
                 JOptionPane.showMessageDialog(new JFrame(), "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
+                password.requestFocusInWindow();
+            } else if (userPassword.length() < 8) {
+                JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
                 password.requestFocusInWindow();
             } else {
 
@@ -335,7 +341,13 @@ public class Login extends javax.swing.JFrame {
                 if (userEmail.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
                     email.requestFocusInWindow();
+                } else if (!userEmail.contains("@")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
+                    email.requestFocusInWindow();
                 } else if (userPassword.isEmpty()) {
+                    password.requestFocusInWindow();
+                } else if (userPassword.length() < 8) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
                     password.requestFocusInWindow();
                 } else {
 
@@ -406,8 +418,14 @@ public class Login extends javax.swing.JFrame {
                 if (userEmail.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
                     email.requestFocusInWindow();
+                } else if (!userEmail.contains("@")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
+                    email.requestFocusInWindow();
                 } else if (userPassword.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
+                    password.requestFocusInWindow();
+                } else if (userPassword.length() < 8) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
                     password.requestFocusInWindow();
                 } else {
 

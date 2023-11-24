@@ -279,10 +279,16 @@ public class SignUp extends javax.swing.JFrame {
             } else if (userEmail.isEmpty()) {
                 JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
                 email.requestFocusInWindow();
+            } else if (!userEmail.contains("@")) {
+                JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
+                email.requestFocusInWindow();
             } else if (userPassword.isEmpty()) {
                 JOptionPane.showMessageDialog(new JFrame(), "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
                 password.requestFocusInWindow();
-            } else {
+            } else if (userPassword.length() < 8) {
+                JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
+                password.requestFocusInWindow();
+            }else {
                 
                 // Parameterized SQL query to retrieve user data based on provided data
                 String query =  "INSERT INTO user(full_name, email, password) VALUES (?, ?, ?)";
@@ -323,7 +329,6 @@ public class SignUp extends javax.swing.JFrame {
             String fullName = fname.getText();
             String userEmail = email.getText();
             String userPassword = new String(password.getPassword());
-
             // Database connection information
             String dbUrl = "jdbc:mysql://localhost:3306/java_user_database";
             String dbUser = "root";
@@ -336,16 +341,19 @@ public class SignUp extends javax.swing.JFrame {
                 // Establish the database connection
                 Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 
-                // Statement st = con.createStatement();
-
                 // Check if full name is provided
                 if (fullName.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Full name is required", "Error", JOptionPane.ERROR_MESSAGE);
                     fname.requestFocusInWindow();
                 } else if (userEmail.isEmpty()) {
                     email.requestFocusInWindow();
+                } else if (!userEmail.contains("@")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
+                    email.requestFocusInWindow();
+                } else if (userPassword.length() < 8) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
+                    password.requestFocusInWindow();
                 } else {
-
                     // Parameterized SQL query to retrieve user data based on provided data
                     String query =  "INSERT INTO user(full_name, email, password) VALUES (?, ?, ?)";
 
@@ -360,10 +368,17 @@ public class SignUp extends javax.swing.JFrame {
                         email.setText("");
                         password.setText("");
                         JOptionPane.showMessageDialog(null, "New account has been created sucessfully!");
-                    }
+                    
+                        Login LoginFrame = new Login();
+                        ImageIcon image = new ImageIcon("gartoon.png");
+                        LoginFrame.setIconImage(image.getImage());
+                        LoginFrame.setVisible(true);
+                        LoginFrame.pack();
+                        LoginFrame.setLocationRelativeTo(null); 
+                        this.dispose(); 
+                    }                      
                 }
-               // Close the database connection
-               // con.close();
+               
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             } 
@@ -398,7 +413,13 @@ public class SignUp extends javax.swing.JFrame {
                 } else if (userEmail.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
                     email.requestFocusInWindow();
+                } else if (!userEmail.contains("@")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
+                    email.requestFocusInWindow();
                 } else if (userPassword.isEmpty()) {
+                    password.requestFocusInWindow();
+                } else if (userPassword.length() < 8) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
                     password.requestFocusInWindow();
                 } else {
 
@@ -454,8 +475,14 @@ public class SignUp extends javax.swing.JFrame {
                 } else if (userEmail.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
                     email.requestFocusInWindow();
+                } else if (!userEmail.contains("@")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
+                    email.requestFocusInWindow();
                 } else if (userPassword.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
+                    password.requestFocusInWindow();
+                }  else if (userPassword.length() < 8) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
                     password.requestFocusInWindow();
                 } else {
 
