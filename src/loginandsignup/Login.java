@@ -9,6 +9,8 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         password.setEchoChar('*');  
+        setIcon(); // Call the setIcon method to set the frame icon
+        setTitle("Demo Project");
     }
 
     @SuppressWarnings("unchecked")
@@ -221,8 +223,6 @@ public class Login extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
               
         SignUp SignUpFrame = new SignUp();
-        ImageIcon image = new ImageIcon("gartoon.png");
-        SignUpFrame.setIconImage(image.getImage());
         SignUpFrame.setVisible(true);
         SignUpFrame.pack();
         SignUpFrame.setLocationRelativeTo(null); 
@@ -306,9 +306,7 @@ public class Login extends javax.swing.JFrame {
 
                     password.setText("");
                 }
-            }
-            // Close the database connection
-            // con.close();
+            }           
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -383,9 +381,7 @@ public class Login extends javax.swing.JFrame {
                         password.setText("");
                     }
                 }
-                // Close the database connection
-                // con.close();
-            } catch (ClassNotFoundException | SQLException e) {
+                         } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -461,8 +457,6 @@ public class Login extends javax.swing.JFrame {
                         password.setText("");
                     }
                 }
-                // Close the database connection
-                // con.close();
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -490,4 +484,11 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JCheckBox showPass;
     // End of variables declaration//GEN-END:variables
+    
+    private void setIcon() {
+        // Assuming "icon.png" is the name of your image file
+        ImageIcon icon = new ImageIcon(getClass().getResource("gartoon.png"));
+        setIconImage(icon.getImage());
+    }
+
 }

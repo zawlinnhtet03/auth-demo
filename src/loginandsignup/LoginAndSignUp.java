@@ -8,9 +8,6 @@ public class LoginAndSignUp {
         Login LoginFrame = new Login();
         LoginFrame.setVisible(true);
         LoginFrame.pack();
-        LoginFrame.setLocationRelativeTo(null); 
-        ImageIcon image = new ImageIcon("gartoon.png");
-        LoginFrame.setIconImage(image.getImage());      
-    }
-    
+        LoginFrame.setLocationRelativeTo(null);   
+    }  
 }

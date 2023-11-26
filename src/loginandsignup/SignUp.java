@@ -9,7 +9,9 @@ public class SignUp extends javax.swing.JFrame {
 
      public SignUp() {
         initComponents();
-        password.setEchoChar('*');   
+        password.setEchoChar('*'); 
+        setIcon();
+        setTitle("Demo Project");
      }
 
     @SuppressWarnings("unchecked")
@@ -242,8 +244,6 @@ public class SignUp extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         Login LoginFrame = new Login();
-        ImageIcon image = new ImageIcon("gartoon.png");
-        LoginFrame.setIconImage(image.getImage());
         LoginFrame.setVisible(true);
         LoginFrame.pack();
         LoginFrame.setLocationRelativeTo(null); 
@@ -534,4 +534,11 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JPasswordField password;
     private javax.swing.JCheckBox showPass;
     // End of variables declaration//GEN-END:variables
+    
+    private void setIcon() {
+        // Assuming "icon.png" is the name of your image file
+        ImageIcon icon = new ImageIcon(getClass().getResource("gartoon.png"));
+        setIconImage(icon.getImage());
+    }
+
 }

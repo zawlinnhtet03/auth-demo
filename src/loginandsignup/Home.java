@@ -18,6 +18,8 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+        setIcon();
+        setTitle("Demo Project");
     }
 
     /**
@@ -105,8 +107,6 @@ public class Home extends javax.swing.JFrame {
 
     private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
         Login LoginFrame = new Login();
-        ImageIcon image = new ImageIcon("gartoon.png");
-        LoginFrame.setIconImage(image.getImage());
         LoginFrame.setVisible(true);
         LoginFrame.pack();
         LoginFrame.setLocationRelativeTo(null);
@@ -116,8 +116,6 @@ public class Home extends javax.swing.JFrame {
     private void logOutBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_logOutBtnKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             Login LoginFrame = new Login();
-            ImageIcon image = new ImageIcon("gartoon.png");
-            LoginFrame.setIconImage(image.getImage());
             LoginFrame.setVisible(true);
             LoginFrame.pack();
             LoginFrame.setLocationRelativeTo(null);
@@ -161,6 +159,12 @@ public class Home extends javax.swing.JFrame {
                 new Home().setVisible(true);
             }
         });
+    }
+    
+    private void setIcon() {
+        // Assuming "icon.png" is the name of your image file
+        ImageIcon icon = new ImageIcon(getClass().getResource("gartoon.png"));
+        setIconImage(icon.getImage());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
