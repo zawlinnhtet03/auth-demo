@@ -3,6 +3,12 @@ package loginandsignup;
 import java.awt.event.KeyEvent;
 import java.sql.*;
 import javax.swing.*;
+import org.mindrot.jbcrypt.BCrypt;
+
+/**
+ *
+ * @author Zaw Linn Htet
+ */
 
 public class Login extends javax.swing.JFrame {
  
@@ -10,7 +16,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         password.setEchoChar('*');  
         setIcon(); // Call the setIcon method to set the frame icon
-        setTitle("Demo Project");
+        setTitle("Beta");
     }
 
     @SuppressWarnings("unchecked")
@@ -249,10 +255,13 @@ public class Login extends javax.swing.JFrame {
         String dbUrl = "jdbc:mysql://localhost:3306/java_user_database";
         String dbUser = "root";
         String dbPassword = "";
-
-        int notFound = 0;
-        String passDB = null;
-        String fname = null;
+        
+        String hashedPasswordFromDB = null;
+        String fullName = null;
+        
+        //int notFound = 0;
+        //String passDB = null;
+        //String fname = null;
 
         try {
             // Register the MySQL JDBC driver
@@ -276,26 +285,31 @@ public class Login extends javax.swing.JFrame {
             } else {
 
                 // Parameterized SQL query to retrieve user data based on provided data
-                String query = "SELECT * FROM user WHERE email = ? AND password = ?";
+                // String query = "SELECT * FROM user WHERE email = ? AND password = ?";
+                String query = "SELECT password, full_name FROM user WHERE email = ?";
 
                 // Prepare statement for the SQL query, replacing placeholders with actual values
                 try (PreparedStatement pst = con.prepareStatement(query)) {
                     pst.setString(1, userEmail);
-                    pst.setString(2, userPassword);
+                   // pst.setString(2, userPassword);
 
                     // Executes the query & retrieve the result set
                     ResultSet rs = pst.executeQuery();
 
                     if (rs.next()) {
-                        passDB = rs.getString("password");
-                        notFound = 1;
-                        fname = rs.getString("full_name");
-                        notFound = 1;
+                        hashedPasswordFromDB = rs.getString("password");
+                        fullName = rs.getString("full_name");
+//                        passDB = rs.getString("password");
+//                        notFound = 1;
+//                        fname = rs.getString("full_name");
+//                        notFound = 1;
                     }
 
-                    if (notFound == 1 && userPassword.equals(passDB)) {
+                    // Use BCrypt to verify the entered password
+                    if (hashedPasswordFromDB != null && BCrypt.checkpw(userPassword, hashedPasswordFromDB)) {
+                        // Passwords match, user is authenticated
                         Home homeFrame = new Home();
-                        homeFrame.setUser(fname);
+                        homeFrame.setUser(fullName);
                         homeFrame.setVisible(true);
                         homeFrame.pack();
                         homeFrame.setLocationRelativeTo(null);
@@ -316,73 +330,16 @@ public class Login extends javax.swing.JFrame {
     private void emailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyPressed
         
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            // User input retrieval
-            String userEmail = email.getText();
-            String userPassword = new String(password.getPassword());
-
-            // Database connection information
-            String dbUrl = "jdbc:mysql://localhost:3306/java_user_database";
-            String dbUser = "root";
-            String dbPassword = "";
-
-            int notFound = 0;
-            String passDB = null;
-            String fname = null;
-
-            try {
-                // Register the MySQL JDBC driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
-
-                // Establish a connection the the MySQL database
-                Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-
-                if (userEmail.isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
-                    email.requestFocusInWindow();
-                } else if (!userEmail.contains("@")) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
-                    email.requestFocusInWindow();
-                } else if (userPassword.isEmpty()) {
-                    password.requestFocusInWindow();
-                } else if (userPassword.length() < 8) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
-                    password.requestFocusInWindow();
-                } else {
-
-                    // Parameterized SQL query to retrieve user data based on provided data
-                    String query = "SELECT * FROM user WHERE email = ? AND password = ?";
-
-                    // Prepare statement for the SQL query, replacing placeholders with actual values
-                    try (PreparedStatement pst = con.prepareStatement(query)) {
-                        pst.setString(1, userEmail);
-                        pst.setString(2, userPassword);
-
-                        // Executes the query & retrieve the result set
-                        ResultSet rs = pst.executeQuery();
-
-                        if (rs.next()) {
-                            passDB = rs.getString("password");
-                            notFound = 1;
-                            fname = rs.getString("full_name");
-                            notFound = 1;
-                        }
-
-                        if (notFound == 1 && userPassword.equals(passDB)) {
-                            Home homeFrame = new Home();
-                            homeFrame.setUser(fname);
-                            homeFrame.setVisible(true);
-                            homeFrame.pack();
-                            homeFrame.setLocationRelativeTo(null);
-                            this.dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(new JFrame(), "Incorrect email or password", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-
-                        password.setText("");
-                    }
-                }
-                         } catch (ClassNotFoundException | SQLException e) {
-                JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+             String userEmail = email.getText();
+                      
+            if (userEmail.isEmpty()) {
+                JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
+                email.requestFocusInWindow();
+            } else if (!userEmail.contains("@")) {
+                JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
+                email.requestFocusInWindow();
+            } else {
+                password.requestFocusInWindow();
             }
         }
     }//GEN-LAST:event_emailKeyPressed
@@ -400,9 +357,8 @@ public class Login extends javax.swing.JFrame {
             String dbUser = "root";
             String dbPassword = "";
 
-            int notFound = 0;
-            String passDB = null;
-            String fname = null;
+            String hashedPasswordFromDB = null;
+            String fullName = null;
 
             try {
                 // Register the MySQL JDBC driver
@@ -426,26 +382,25 @@ public class Login extends javax.swing.JFrame {
                 } else {
 
                     // Parameterized SQL query to retrieve user data based on provided data
-                    String query = "SELECT * FROM user WHERE email = ? AND password = ?";
+                    String query = "SELECT password, full_name FROM user WHERE email = ?";
 
                     // Prepare statement for the SQL query, replacing placeholders with actual values
                     try (PreparedStatement pst = con.prepareStatement(query)) {
-                        pst.setString(1, userEmail);
-                        pst.setString(2, userPassword);
+                        pst.setString(1, userEmail);                       
 
                         // Executes the query & retrieve the result set
                         ResultSet rs = pst.executeQuery();
 
                         if (rs.next()) {
-                            passDB = rs.getString("password");
-                            notFound = 1;
-                            fname = rs.getString("full_name");
-                            notFound = 1;
+                            hashedPasswordFromDB = rs.getString("password");
+                            fullName = rs.getString("full_name");
                         }
 
-                        if (notFound == 1 && userPassword.equals(passDB)) {
+                        // Use BCrypt to verify the entered password
+                        if (hashedPasswordFromDB != null && BCrypt.checkpw(userPassword, hashedPasswordFromDB)) {
+                            // Passwords match, user is authenticated
                             Home homeFrame = new Home();
-                            homeFrame.setUser(fname);
+                            homeFrame.setUser(fullName);
                             homeFrame.setVisible(true);
                             homeFrame.pack();
                             homeFrame.setLocationRelativeTo(null);

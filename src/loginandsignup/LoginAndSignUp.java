@@ -1,6 +1,9 @@
 package loginandsignup;
 
-import javax.swing.ImageIcon;
+/**
+ *
+ * @author Zaw Linn Htet
+ */
 
 public class LoginAndSignUp {
     public static void main(String[] args) {

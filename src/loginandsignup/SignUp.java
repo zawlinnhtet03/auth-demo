@@ -1,9 +1,14 @@
 package loginandsignup;
 
-//import com.sun.jdi.connect.spi.Connection;
 import java.awt.event.KeyEvent;
 import java.sql.*;
 import javax.swing.*;
+import org.mindrot.jbcrypt.BCrypt;
+
+/**
+ *
+ * @author Zaw Linn Htet
+ */
 
 public class SignUp extends javax.swing.JFrame {
 
@@ -11,7 +16,7 @@ public class SignUp extends javax.swing.JFrame {
         initComponents();
         password.setEchoChar('*'); 
         setIcon();
-        setTitle("Demo Project");
+        setTitle("Beta");
      }
 
     @SuppressWarnings("unchecked")
@@ -258,20 +263,21 @@ public class SignUp extends javax.swing.JFrame {
         String userEmail = email.getText();
         String userPassword = new String(password.getPassword());
 
+        // Hash the password using BCrypt
+        String hashedPassword = BCrypt.hashpw(userPassword, BCrypt.gensalt());
+        
         // Database connection information
         String dbUrl = "jdbc:mysql://localhost:3306/java_user_database";
         String dbUser = "root";
         String dbPassword = "";
 
-        try {
+        try (Connection con = establishConnection()) {
             // Register the MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            //Class.forName("com.mysql.cj.jdbc.Driver");
 
             // Establish the database connection
-            Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            
-            // Statement st = con.createStatement();
-            
+            //Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+
             // Check if full name is provided
             if (fullName.isEmpty()) {
                 JOptionPane.showMessageDialog(new JFrame(), "Full name is required", "Error", JOptionPane.ERROR_MESSAGE);
@@ -289,25 +295,33 @@ public class SignUp extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
                 password.requestFocusInWindow();
             } else {
-                
-                // Parameterized SQL query to retrieve user data based on provided data
-                String query =  "INSERT INTO user(full_name, email, password) VALUES (?, ?, ?)";
-                
-                // Prepare statement for the SQL query, replacing placeholders with actual values
-                try (PreparedStatement pst = con.prepareStatement(query)) {
-                    pst.setString(1, fullName);
-                    pst.setString(2, userEmail);
-                    pst.setString(3, userPassword);
-                    pst.executeUpdate();
-                    
-                    fname.setText("");
-                    email.setText("");
-                    password.setText("");
-                    JOptionPane.showMessageDialog(null, "New account has been created sucessfully!");
+                // Check if the user already exists in the database
+                String checkQuery = "SELECT * FROM user WHERE email=?";
+                try (PreparedStatement checkStmt = con.prepareStatement(checkQuery)) {
+                    checkStmt.setString(1, userEmail);
+                    ResultSet resultSet = checkStmt.executeQuery();
+
+                    if (resultSet.next()) {
+                        // User already exists
+                        JOptionPane.showMessageDialog(new JFrame(), "User with this email already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        // User does not exist, proceed with registration
+                        String insertQuery =  "INSERT INTO user(full_name, email, password) VALUES (?, ?, ?)";
+
+                        try (PreparedStatement insertStmt = con.prepareStatement(insertQuery)) {
+                            insertStmt.setString(1, fullName);
+                            insertStmt.setString(2, userEmail);
+                            insertStmt.setString(3, hashedPassword);
+                            insertStmt.executeUpdate();
+
+                            fname.setText("");
+                            email.setText("");
+                            password.setText("");
+                            JOptionPane.showMessageDialog(null, "New account has been created successfully!");
+                        }
+                    }
                 }
-            }
-           // Close the database connection
-           // con.close();
+            }          
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -325,195 +339,90 @@ public class SignUp extends javax.swing.JFrame {
 
     private void fnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fnameKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-           // User input retrieval
             String fullName = fname.getText();
-            String userEmail = email.getText();
-            String userPassword = new String(password.getPassword());
-
-            // Database connection information
-            String dbUrl = "jdbc:mysql://localhost:3306/java_user_database";
-            String dbUser = "root";
-            String dbPassword = "";
-
-            try {
-                // Register the MySQL JDBC driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
-
-                // Establish the database connection
-                Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-
-                // Statement st = con.createStatement();
-
-                // Check if full name is provided
-                if (fullName.isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Full name is required", "Error", JOptionPane.ERROR_MESSAGE);
-                    fname.requestFocusInWindow();
-                } else if (userEmail.isEmpty()) {                    
-                    email.requestFocusInWindow();
-                } else if (!userEmail.contains("@")) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
-                    email.requestFocusInWindow();
-                } else if (userPassword.isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
-                    password.requestFocusInWindow();
-                } else if (userPassword.length() < 8) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
-                    password.requestFocusInWindow();
-                } else {
-
-                    // Parameterized SQL query to retrieve user data based on provided data
-                    String query =  "INSERT INTO user(full_name, email, password) VALUES (?, ?, ?)";
-
-                    // Prepare statement for the SQL query, replacing placeholders with actual values
-                    try (PreparedStatement pst = con.prepareStatement(query)) {
-                        pst.setString(1, fullName);
-                        pst.setString(2, userEmail);
-                        pst.setString(3, userPassword);
-                        pst.executeUpdate();
-
-                        fname.setText("");
-                        email.setText("");
-                        password.setText("");
-                        JOptionPane.showMessageDialog(null, "New account has been created sucessfully!");
-                    }
-                }
-               // Close the database connection
-               // con.close();
-            } catch (ClassNotFoundException | SQLException e) {
-                JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            } 
+            
+            if (fullName.isEmpty()) {
+                JOptionPane.showMessageDialog(new JFrame(), "Full name is required", "Error", JOptionPane.ERROR_MESSAGE);
+                fname.requestFocusInWindow();
+            } else {
+                email.requestFocusInWindow();
+            }
         }
     }//GEN-LAST:event_fnameKeyPressed
 
     private void emailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_emailKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-           // User input retrieval
-            String fullName = fname.getText();
-            String userEmail = email.getText();
-            String userPassword = new String(password.getPassword());
-
-            // Database connection information
-            String dbUrl = "jdbc:mysql://localhost:3306/java_user_database";
-            String dbUser = "root";
-            String dbPassword = "";
-
-            try {
-                // Register the MySQL JDBC driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
-
-                // Establish the database connection
-                Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-
-                // Statement st = con.createStatement();
-
-                // Check if full name is provided
-                if (fullName.isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Full name is required", "Error", JOptionPane.ERROR_MESSAGE);
-                    fname.requestFocusInWindow();
-                } else if (userEmail.isEmpty()) {
+            try (Connection con = establishConnection()) {
+                String userEmail = email.getText();
+           
+                if (userEmail.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
                     email.requestFocusInWindow();
                 } else if (!userEmail.contains("@")) {
                     JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
                     email.requestFocusInWindow();
-                } else if (userPassword.isEmpty()) {
-                    password.requestFocusInWindow();
-                } else if (userPassword.length() < 8) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
-                    password.requestFocusInWindow();
                 } else {
+                    String checkQuery = "SELECT * FROM user WHERE email=?";
+                    
+                    try (PreparedStatement checkStmt = con.prepareStatement(checkQuery)) {
+                        checkStmt.setString(1, userEmail);
+                        ResultSet resultSet = checkStmt.executeQuery();
 
-                    // Parameterized SQL query to retrieve user data based on provided data
-                    String query =  "INSERT INTO user(full_name, email, password) VALUES (?, ?, ?)";
-
-                    // Prepare statement for the SQL query, replacing placeholders with actual values
-                    try (PreparedStatement pst = con.prepareStatement(query)) {
-                        pst.setString(1, fullName);
-                        pst.setString(2, userEmail);
-                        pst.setString(3, userPassword);
-                        pst.executeUpdate();
-
-                        fname.setText("");
-                        email.setText("");
-                        password.setText("");
-                        JOptionPane.showMessageDialog(null, "New account has been created sucessfully!");
+                        if (resultSet.next()) {
+                            // User already exists
+                            JOptionPane.showMessageDialog(new JFrame(), "User with this email already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            password.requestFocusInWindow();
+                        }
                     }
                 }
-               // Close the database connection
-               // con.close();
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            } 
+            }
         }      
     }//GEN-LAST:event_emailKeyPressed
 
     private void passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-             // User input retrieval
+            // User input retrieval
             String fullName = fname.getText();
             String userEmail = email.getText();
             String userPassword = new String(password.getPassword());
 
-            // Database connection information
-            String dbUrl = "jdbc:mysql://localhost:3306/java_user_database";
-            String dbUser = "root";
-            String dbPassword = "";
+            // Hash the password using BCrypt
+            String hashedPassword = BCrypt.hashpw(userPassword, BCrypt.gensalt());
 
-            try {
-                // Register the MySQL JDBC driver
-                Class.forName("com.mysql.cj.jdbc.Driver");
-
-                // Establish the database connection
-                Connection con = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-
-                // Statement st = con.createStatement();
-
-                // Check if full name is provided
-                if (fullName.isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Full name is required", "Error", JOptionPane.ERROR_MESSAGE);
-                    fname.requestFocusInWindow();
-                } else if (userEmail.isEmpty()) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
-                    email.requestFocusInWindow();
-                } else if (!userEmail.contains("@")) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Invalid email format. Please include '@'", "Error", JOptionPane.ERROR_MESSAGE);
-                    email.requestFocusInWindow();
-                } else if (userPassword.isEmpty()) {
+            try (Connection con = establishConnection()) {
+                if (userPassword.isEmpty()) {
                     JOptionPane.showMessageDialog(new JFrame(), "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
                     password.requestFocusInWindow();
                 } else if (userPassword.length() < 8) {
                     JOptionPane.showMessageDialog(new JFrame(), "Password must be at least eight characters long", "Error", JOptionPane.ERROR_MESSAGE);
                     password.requestFocusInWindow();
                 } else {
+                    String insertQuery =  "INSERT INTO user(full_name, email, password) VALUES (?, ?, ?)";
 
-                    // Parameterized SQL query to retrieve user data based on provided data
-                    String query =  "INSERT INTO user(full_name, email, password) VALUES (?, ?, ?)";
-
-                    // Prepare statement for the SQL query, replacing placeholders with actual values
-                    try (PreparedStatement pst = con.prepareStatement(query)) {
-                        pst.setString(1, fullName);
-                        pst.setString(2, userEmail);
-                        pst.setString(3, userPassword);
-                        pst.executeUpdate();
+                    try (PreparedStatement insertStmt = con.prepareStatement(insertQuery)) {
+                        insertStmt.setString(1, fullName);
+                        insertStmt.setString(2, userEmail);
+                        insertStmt.setString(3, hashedPassword);
+                        insertStmt.executeUpdate();
 
                         fname.setText("");
                         email.setText("");
                         password.setText("");
-                        JOptionPane.showMessageDialog(null, "New account has been created sucessfully!");
+                        JOptionPane.showMessageDialog(null, "New account has been created successfully!");
                     }
-                }
-               // Close the database connection
-               // con.close();
+                }          
             } catch (ClassNotFoundException | SQLException e) {
                 JOptionPane.showMessageDialog(new JFrame(), "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_passwordKeyPressed
-    
+   
     /**
      * @param args the command line arguments
      */
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton SignUpBtn;
@@ -540,5 +449,10 @@ public class SignUp extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon(getClass().getResource("gartoon.png"));
         setIconImage(icon.getImage());
     }
-
+    
+    // Add a method for database connection
+    private Connection establishConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/java_user_database", "root", "");
+    }
 }
