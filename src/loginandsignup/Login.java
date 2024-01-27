@@ -16,7 +16,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         password.setEchoChar('*');  
         setIcon(); // Call the setIcon method to set the frame icon
-        setTitle("Beta");
+        setTitle("Sorting Visualizer");
     }
 
     @SuppressWarnings("unchecked")
@@ -46,45 +46,40 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 500));
         jPanel1.setLayout(null);
 
-        Right.setBackground(new java.awt.Color(53, 153, 255));
+        Right.setBackground(new java.awt.Color(102, 153, 255));
         Right.setPreferredSize(new java.awt.Dimension(400, 500));
 
-        jLabel6.setFont(new java.awt.Font("Felix Titling", 1, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Company Name");
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/ffff.png"))); // NOI18N
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel7.setText("copyright © company name All rights reserved");
+        jLabel7.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setText("Sorting Visualizer");
 
         javax.swing.GroupLayout RightLayout = new javax.swing.GroupLayout(Right);
         Right.setLayout(RightLayout);
         RightLayout.setHorizontalGroup(
             RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RightLayout.createSequentialGroup()
-                .addGap(0, 81, Short.MAX_VALUE)
-                .addComponent(jLabel7)
-                .addGap(40, 40, 40))
             .addGroup(RightLayout.createSequentialGroup()
-                .addGroup(RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(RightLayout.createSequentialGroup()
-                        .addGap(103, 103, 103)
-                        .addComponent(jLabel6))
-                    .addGroup(RightLayout.createSequentialGroup()
-                        .addGap(145, 145, 145)
-                        .addComponent(jLabel5)))
+                .addGap(145, 145, 145)
+                .addComponent(jLabel5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, RightLayout.createSequentialGroup()
+                .addGap(0, 13, Short.MAX_VALUE)
+                .addGroup(RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel6))
+                .addGap(20, 20, 20))
         );
         RightLayout.setVerticalGroup(
             RightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(RightLayout.createSequentialGroup()
-                .addGap(136, 136, 136)
-                .addComponent(jLabel5)
-                .addGap(26, 26, 26)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
+                .addGap(55, 55, 55)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addComponent(jLabel7)
-                .addGap(78, 78, 78))
+                .addGap(65, 65, 65)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(Right);
@@ -93,9 +88,9 @@ public class Login extends javax.swing.JFrame {
         Left.setBackground(new java.awt.Color(255, 255, 255));
         Left.setMinimumSize(new java.awt.Dimension(400, 500));
 
-        jLabel1.setFont(new java.awt.Font("MV Boli", 3, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Candara Light", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("SIGN IN");
+        jLabel1.setText("Sign in");
 
         jLabel2.setBackground(new java.awt.Color(102, 102, 102));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -121,7 +116,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        LoginBtn.setBackground(new java.awt.Color(53, 153, 255));
+        LoginBtn.setBackground(new java.awt.Color(102, 153, 255));
         LoginBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         LoginBtn.setForeground(new java.awt.Color(255, 255, 255));
         LoginBtn.setText("Sign In");
@@ -134,7 +129,7 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Don't have an account?");
 
-        jButton2.setBackground(new java.awt.Color(53, 153, 255));
+        jButton2.setBackground(new java.awt.Color(102, 153, 255));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Sign Up");
@@ -157,6 +152,10 @@ public class Login extends javax.swing.JFrame {
         Left.setLayout(LeftLayout);
         LeftLayout.setHorizontalGroup(
             LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LeftLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(showPass)
+                .addGap(37, 37, 37))
             .addGroup(LeftLayout.createSequentialGroup()
                 .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(LeftLayout.createSequentialGroup()
@@ -174,12 +173,8 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(jButton2))))
                     .addGroup(LeftLayout.createSequentialGroup()
                         .addGap(138, 138, 138)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1)))
                 .addContainerGap(27, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LeftLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(showPass)
-                .addGap(37, 37, 37))
         );
         LeftLayout.setVerticalGroup(
             LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +197,7 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(LeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jButton2))
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jPanel1.add(Left);
@@ -259,10 +254,6 @@ public class Login extends javax.swing.JFrame {
         String hashedPasswordFromDB = null;
         String fullName = null;
         
-        //int notFound = 0;
-        //String passDB = null;
-        //String fname = null;
-
         try {
             // Register the MySQL JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -285,13 +276,11 @@ public class Login extends javax.swing.JFrame {
             } else {
 
                 // Parameterized SQL query to retrieve user data based on provided data
-                // String query = "SELECT * FROM user WHERE email = ? AND password = ?";
                 String query = "SELECT password, full_name FROM user WHERE email = ?";
 
                 // Prepare statement for the SQL query, replacing placeholders with actual values
                 try (PreparedStatement pst = con.prepareStatement(query)) {
                     pst.setString(1, userEmail);
-                   // pst.setString(2, userPassword);
 
                     // Executes the query & retrieve the result set
                     ResultSet rs = pst.executeQuery();
@@ -299,10 +288,6 @@ public class Login extends javax.swing.JFrame {
                     if (rs.next()) {
                         hashedPasswordFromDB = rs.getString("password");
                         fullName = rs.getString("full_name");
-//                        passDB = rs.getString("password");
-//                        notFound = 1;
-//                        fname = rs.getString("full_name");
-//                        notFound = 1;
                     }
 
                     // Use BCrypt to verify the entered password
@@ -445,5 +430,4 @@ public class Login extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon(getClass().getResource("gartoon.png"));
         setIconImage(icon.getImage());
     }
-
 }
