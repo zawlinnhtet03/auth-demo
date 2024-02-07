@@ -49,7 +49,7 @@ public class Login extends javax.swing.JFrame {
         Right.setBackground(new java.awt.Color(102, 153, 255));
         Right.setPreferredSize(new java.awt.Dimension(400, 500));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/ffff.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/sortedbar.png"))); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Showcard Gothic", 0, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
